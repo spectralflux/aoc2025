@@ -28,7 +28,21 @@ fn part1(inputs: String) -> Int {
 }
 
 fn part2(inputs: String) -> Int {
-  0
+  let rolls = parse(inputs)
+
+  set.fold(rolls, #(rolls, 0), recurse_remove).1
+}
+
+fn recurse_remove(acc: #(Set(Roll), Int), r: Roll) -> #(Set(Roll), Int) {
+  case set.contains(acc.0, r) && is_accessible(acc.0, r) {
+    False -> acc
+    True ->
+      list.fold(
+        get_adjacent_rolls(r),
+        #(set.delete(acc.0, r), acc.1 + 1),
+        recurse_remove,
+      )
+  }
 }
 
 fn parse(inputs: String) -> Set(Roll) {
