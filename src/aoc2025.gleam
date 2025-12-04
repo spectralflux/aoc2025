@@ -1,4 +1,4 @@
-import day3
+import day4
 
 import simplifile.{read}
 
@@ -10,5 +10,5 @@ fn get_input(filename: String) -> String {
 }
 
 pub fn main() -> Nil {
-  day3.run(get_input("inputs/3.txt"))
+  day4.run(get_input("inputs/4.txt"))
 }
