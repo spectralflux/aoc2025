@@ -1,5 +1,6 @@
 import gleam/list
 import gleam/result
+import gleam/set.{type Set}
 import gleam/string
 
 type Roll {
@@ -11,6 +12,10 @@ pub fn run(inputs: String) {
   |> part1()
   |> echo
 
+  inputs
+  |> part2()
+  |> echo
+
   Nil
 }
 
@@ -18,10 +23,15 @@ fn part1(inputs: String) -> Int {
   let rolls = parse(inputs)
 
   rolls
+  |> set.to_list
   |> list.count(is_accessible(rolls, _))
 }
 
-fn parse(inputs: String) -> List(Roll) {
+fn part2(inputs: String) -> Int {
+  0
+}
+
+fn parse(inputs: String) -> Set(Roll) {
   let rows =
     inputs
     |> string.split("\n")
@@ -39,10 +49,13 @@ fn parse(inputs: String) -> List(Roll) {
   |> list.flatten
   |> list.filter(result.is_ok)
   |> list.map(fn(n) { result.unwrap(n, Roll(0, 0)) })
+  |> set.from_list
 }
 
 fn is_accessible(inputs, roll) {
-  list.count(get_adjacent_rolls(roll), list.contains(inputs, _)) < 4
+  let neighbour_count =
+    list.count(get_adjacent_rolls(roll), set.contains(inputs, _))
+  neighbour_count < 4
 }
 
 fn get_adjacent_rolls(roll) {
